@@ -34,7 +34,7 @@ public class LssSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {// @formatter:off
         http
-        .authorizeHttpRequests()
+        .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/signup",
                         "/user/register",
                         "/registrationConfirm*",
@@ -44,26 +44,23 @@ public class LssSecurityConfig {
                         "/user/changePassword*",
                         "/user/savePassword*",
                         "/js/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().authenticated())
 
-        .and()
-        .formLogin().
-            loginPage("/login").permitAll().
-            loginProcessingUrl("/doLogin")
+        .formLogin((form) -> form
+                .loginPage("/login").permitAll()
+                .loginProcessingUrl("/doLogin"))
 
-        .and()
-        .rememberMe()   
-        .tokenValiditySeconds(604800)
-        .key("lssAppKey")
-        //.useSecureCookie(true)
-        .rememberMeCookieName("sticky-cookie")
-        .rememberMeParameter("remember")        
-        
-        .and()
-        .logout().permitAll().logoutUrl("/logout")
+        .rememberMe((rememberMe) -> rememberMe
+                .tokenValiditySeconds(604800)
+                .key("lssAppKey")
+                //.useSecureCookie(true)
+                .rememberMeCookieName("sticky-cookie")
+                .rememberMeParameter("remember"))
 
-        .and()
-        .csrf().disable();
+        .logout((logout) -> logout
+                .permitAll().logoutUrl("/logout"))
+
+        .csrf((csrf) -> csrf.disable());
         return http.build();
     } // @formatter:on
 

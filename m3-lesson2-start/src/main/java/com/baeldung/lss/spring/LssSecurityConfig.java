@@ -3,6 +3,7 @@ package com.baeldung.lss.spring;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,7 +35,7 @@ public class LssSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {// @formatter:off
         http
-        .authorizeHttpRequests()
+        .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/signup",
                         "/user/register",
                         "/registrationConfirm*",
@@ -44,21 +45,18 @@ public class LssSecurityConfig {
                         "/user/changePassword*",
                         "/user/savePassword*",
                         "/js/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().authenticated())
 
-        .and()
-        .formLogin().
-            loginPage("/login").permitAll().
-            loginProcessingUrl("/doLogin")
+        .formLogin((form) -> form
+                .loginPage("/login").permitAll()
+                .loginProcessingUrl("/doLogin"))
 
-        .and()
-        .rememberMe()
+        .rememberMe(Customizer.withDefaults())
 
-        .and()
-        .logout().permitAll().logoutUrl("/logout")
+        .logout((logout) -> logout
+                .permitAll().logoutUrl("/logout"))
 
-        .and()
-        .csrf().disable();
+        .csrf((csrf) -> csrf.disable());
         return http.build();
     } // @formatter:on
 
