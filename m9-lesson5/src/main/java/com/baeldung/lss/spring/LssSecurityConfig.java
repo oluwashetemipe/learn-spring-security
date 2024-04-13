@@ -48,17 +48,14 @@ public class LssSecurityConfig {
                 ))
             .anyRequest().access(baseAccessRules)
         )
-        .formLogin().
-            loginPage("/login").permitAll().
-            loginProcessingUrl("/doLogin")
-        .and()
-        .logout().permitAll().logoutUrl("/logout")
-        
-        .and()
-        .csrf().disable();
+        .formLogin((form) -> form
+                .loginPage("/login").permitAll()
+                .loginProcessingUrl("/doLogin"))
+
+        .logout((logout) -> logout
+                .permitAll().logoutUrl("/logout"))
+
+        .csrf((csrf) -> csrf.disable());
         return http.build();
     }
-    
-    
-
 }

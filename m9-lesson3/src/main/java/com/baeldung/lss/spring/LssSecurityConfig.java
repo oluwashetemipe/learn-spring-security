@@ -47,17 +47,16 @@ public class LssSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {// @formatter:off
         http
         .authorizeHttpRequests((authorize) -> authorize
-            .anyRequest().authenticated()
-        )
-        .formLogin().
-            loginPage("/login").permitAll().
-            loginProcessingUrl("/doLogin")
+                .anyRequest().authenticated())
 
-        .and()
-        .logout().permitAll().logoutUrl("/logout")
+        .formLogin((form) -> form
+                .loginPage("/login").permitAll()
+                .loginProcessingUrl("/doLogin"))
 
-        .and()
-        .csrf().disable();
+        .logout((logout) -> logout
+                .permitAll().logoutUrl("/logout"))
+
+        .csrf((csrf) -> csrf.disable());
         return http.build();
     }
 
