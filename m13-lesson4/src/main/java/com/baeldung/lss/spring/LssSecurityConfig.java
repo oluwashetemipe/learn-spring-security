@@ -55,21 +55,20 @@ public class LssSecurityConfig {
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception { // @formatter:off
         http
-        .authorizeHttpRequests()
+        .authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(regexMatcher("/user\\?form")).hasAnyRole("ADMIN")
                 .requestMatchers("/user").hasAnyRole("ADMIN", "USER")
-                .requestMatchers("/user/**").hasRole("ADMIN")
-        .and()
-        .formLogin().
-            loginPage("/login").permitAll().
-            loginProcessingUrl("/doLogin").
-            defaultSuccessUrl("/user", true)
+                .requestMatchers("/user/**").hasRole("ADMIN"))
 
-        .and()
-        .logout().permitAll().logoutUrl("/logout")
-        
-        .and()
-        .csrf().disable();
+        .formLogin((form) -> form
+                .loginPage("/login").permitAll()
+                .loginProcessingUrl("/doLogin").
+                defaultSuccessUrl("/user", true))
+
+        .logout((logout) -> logout
+                .permitAll().logoutUrl("/logout"))
+
+        .csrf((csrf) -> csrf.disable());
         return http.build();
     } // @formatter:on
 
