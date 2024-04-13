@@ -11,6 +11,7 @@ spring:
             redirect-uri: http://localhost:8082/lsso-client/login/oauth2/code/custom
         provider:
           custom:
+            # issuer-uri: http://localhost:8083/auth/realms/baeldung
             authorization-uri: http://localhost:8083/auth/realms/baeldung/protocol/openid-connect/auth
             token-uri: http://localhost:8083/auth/realms/baeldung/protocol/openid-connect/token
             user-info-uri: http://localhost:8083/auth/realms/baeldung/protocol/openid-connect/userinfo
