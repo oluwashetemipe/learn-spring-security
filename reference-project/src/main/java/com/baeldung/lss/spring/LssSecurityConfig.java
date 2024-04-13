@@ -73,42 +73,40 @@ public class LssSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {// @formatter:off
         http
                 .addFilterBefore(lssLoggingFilter, AnonymousAuthenticationFilter.class)
-                .authorizeHttpRequests()
-                .requestMatchers("/signup",
-                        "/user/register",
-                        "/registrationConfirm*",
-                        "/badUser*",
-                        "/forgotPassword*",
-                        "/user/resetPassword*",
-                        "/user/changePassword*",
-                        "/user/savePassword*",
-                        "/code*",
-                        "/isUsing2FA*",
-                        "/js/**").permitAll()
-                .requestMatchers("/secured").hasRole("USER")//access("hasRole('USER')")
-                .anyRequest().authenticated()
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/signup",
+                                "/user/register",
+                                "/registrationConfirm*",
+                                "/badUser*",
+                                "/forgotPassword*",
+                                "/user/resetPassword*",
+                                "/user/changePassword*",
+                                "/user/savePassword*",
+                                "/code*",
+                                "/isUsing2FA*",
+                                "/js/**").permitAll()
+                        .requestMatchers("/secured").hasRole("USER")//access("hasRole('USER')")
+                        .anyRequest().authenticated())
 
-                .and()
-                .formLogin().
-                loginPage("/login").permitAll().
-                loginProcessingUrl("/doLogin")
-                .authenticationDetailsSource(authenticationDetailsSource)
+                .formLogin((form) -> form
+                        .loginPage("/login").permitAll()
+                        .loginProcessingUrl("/doLogin")
+                        .authenticationDetailsSource(authenticationDetailsSource))
 
-                .and()
-                .rememberMe()
-                .key("lssAppKey")
-                .tokenValiditySeconds(604800) // 1 week = 604800
-                .tokenRepository(persistentTokenRepository())
+                .rememberMe((rememberMe) -> rememberMe
+                        .key("lssAppKey")
+                        .tokenValiditySeconds(604800) // 1 week = 604800
+                        .tokenRepository(persistentTokenRepository()))
 
-                .and()
-                .logout().permitAll().logoutUrl("/logout")
+                .logout((logout) -> logout
+                        .permitAll().logoutUrl("/logout"))
 
-                .and()
-                .sessionManagement().maximumSessions(1)
-                .sessionRegistry(sessionRegistry()).and().sessionFixation().none()
+                .sessionManagement((session) -> session
+                        .sessionFixation((fixation) -> fixation.none())
+                        .maximumSessions(1)
+                        .sessionRegistry(sessionRegistry()))
 
-                .and()
-                .csrf().disable();
+                .csrf((csrf) -> csrf.disable());
         return http.build();
     } // @formatter:on
 

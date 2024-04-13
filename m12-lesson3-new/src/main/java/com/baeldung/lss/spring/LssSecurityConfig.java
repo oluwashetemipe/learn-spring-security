@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -58,19 +59,20 @@ public class LssSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain1(HttpSecurity http) throws Exception {// @formatter:off
         http
-                .authorizeHttpRequests()
-                .requestMatchers("/signup", "/user/register").permitAll()
-                .anyRequest().hasRole("USER")
-                .and()
-                .formLogin().
-                loginPage("/login").permitAll().
-                loginProcessingUrl("/doLogin")
-                .defaultSuccessUrl("/user")
-                .authenticationDetailsSource(authenticationDetailsSource)
-                .and()
-                .logout().permitAll().logoutUrl("/logout")
-                .and()
-                .csrf().disable();
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/signup", "/user/register").permitAll()
+                        .anyRequest().hasRole("USER"))
+
+                .formLogin((form) -> form
+                        .loginPage("/login").permitAll()
+                        .loginProcessingUrl("/doLogin")
+                        .defaultSuccessUrl("/user")
+                        .authenticationDetailsSource(authenticationDetailsSource))
+
+                .logout((logout) -> logout
+                        .permitAll().logoutUrl("/logout"))
+
+                .csrf((csrf) -> csrf.disable());
         return http.build();
     } // @formatter:on
 
@@ -80,12 +82,11 @@ public class LssSecurityConfig {
         @Bean
         public SecurityFilterChain filterChain2(HttpSecurity http) throws Exception {// @formatter:off
             http
-                .authorizeHttpRequests()
-                .requestMatchers("/code*").permitAll()
-                .anyRequest()
-                .hasRole("TEMP_USER")
-                .and()
-                .httpBasic();
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/code*").permitAll()
+                        .anyRequest()
+                        .hasRole("TEMP_USER"))
+                .httpBasic(Customizer.withDefaults());
             return http.build();
         }
     }
