@@ -16,8 +16,8 @@ Module  8</description>
         <module>m8-lesson3</module>
         <module>m8-lesson4</module>
         <module>m8-lesson5</module>
-        <module>setting-up-users-at-startup-start</module>
-        <module>setting-up-users-at-startup-end</module>
+        <!--<module>setting-up-users-at-startup-start</module> requires JDK 17+ -->
+        <!--<module>setting-up-users-at-startup-end</module> requires JDK 17+ -->
     </modules>
 
 </project>
