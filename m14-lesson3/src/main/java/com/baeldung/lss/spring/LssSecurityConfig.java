@@ -1,6 +1,8 @@
 package com.baeldung.lss.spring;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -9,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
+@Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 public class LssSecurityConfig {
@@ -16,8 +19,16 @@ public class LssSecurityConfig {
     @SuppressWarnings("deprecation")
     @Bean
     public MapReactiveUserDetailsService userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder().username("user").password("pass").roles("USER").build();
-        UserDetails admin = User.withDefaultPasswordEncoder().username("admin").password("pass").roles("ADMIN").build();
+        UserDetails user = User.withDefaultPasswordEncoder()
+            .username("user")
+            .password("pass")
+            .roles("USER")
+            .build();
+        UserDetails admin = User.withDefaultPasswordEncoder()
+            .username("admin")
+            .password("pass")
+            .roles("ADMIN")
+            .build();
 
         return new MapReactiveUserDetailsService(user, admin);
     }
@@ -26,17 +37,14 @@ public class LssSecurityConfig {
     SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity httpSecurity) throws Exception {
         // @formatter:off
         return httpSecurity
-                .authorizeExchange()
-                .pathMatchers("/user/delete/*").hasRole("ADMIN")
-                .pathMatchers("/favicon.ico").permitAll()
-                .anyExchange()
-                .authenticated()
-                    .and()
-                .formLogin()        
-                    .and()
-                .csrf()
-                .disable()
-                    .build();
+            .authorizeExchange((authorize) -> authorize
+                    .pathMatchers("/user/delete/*").hasRole("ADMIN")
+                    .pathMatchers("/favicon.ico").permitAll()
+                    .anyExchange()
+                    .authenticated())
+            .formLogin(Customizer.withDefaults())
+            .csrf((csrf) -> csrf.disable())
+                .build();
          // @formatter:on
     }
 

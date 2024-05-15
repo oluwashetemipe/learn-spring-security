@@ -14,7 +14,7 @@
         <module>m14-lesson1</module>
         <module>m14-lesson2-start</module>
         <module>m14-lesson2</module>
-        <module>m14-lesson3</module>
+        <!--<module>m14-lesson3</module> requires JDK 17+ -->
     </modules>
 
 </project>
