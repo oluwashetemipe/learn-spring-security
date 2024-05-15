@@ -1693,6 +1693,6 @@
   "clientAuthenticationFlow" : "clients",
   "dockerAuthenticationFlow" : "docker auth",
   "attributes" : { },
-  "keycloakVersion" : "10.0.1",
+  "keycloakVersion" : "19.0.3",
   "userManagedAccessAllowed" : false
 }

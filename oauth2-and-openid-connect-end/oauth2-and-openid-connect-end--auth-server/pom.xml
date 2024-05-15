@@ -60,6 +60,31 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-servlet-filter-adapter</artifactId>
+            <version>${keycloak.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-crypto-default</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-admin-ui</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-services</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
+
         <!-- config properties processor -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -114,13 +139,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
 
-        <keycloak.version>10.0.1</keycloak.version>
+        <keycloak.version>19.0.3</keycloak.version>
 
         <!-- these should be updated together with Keycloak -->
         <!-- check keycloak-dependencies-server-all effective pom -->
-        <infinispan.version>9.4.18.Final</infinispan.version>
-        <resteasy.version>3.11.2.Final</resteasy.version>
-        <liquibase.version>3.5.5</liquibase.version>
+        <infinispan.version>12.1.7.Final</infinispan.version>
+        <resteasy.version>4.7.4.Final</resteasy.version>
+        <liquibase.version>4.8.0</liquibase.version>
         <h2.version>1.4.200</h2.version>
     </properties>
 
