@@ -10,8 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 /**
- * This Test class relies on HSQL DB and all integration tests in this class are run against
- * in-memory HSQL DB instead of MySQL DB.
+ * This Test class relies on MySQL DB and all integration tests in this
+ * class are run against MySQL DB instead of in-memory HSQL DB.
  */
 public class LiveTest {
 
