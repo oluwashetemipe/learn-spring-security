@@ -1,7 +1,10 @@
 package com.baeldung.lsso.config;
 
+import org.keycloak.Config;
 import org.keycloak.platform.PlatformProvider;
 import org.keycloak.services.ServicesLogger;
+
+import java.io.File;
 
 public class SimplePlatformProvider implements PlatformProvider {
 
@@ -30,6 +33,16 @@ public class SimplePlatformProvider implements PlatformProvider {
                 System.exit(status);
             }
         }.start();
+    }
+
+    @Override
+    public File getTmpDirectory() {
+        return new File(System.getProperty("java.io.tmpdir"));
+    }
+
+    @Override
+    public ClassLoader getScriptEngineClassLoader(Config.Scope scriptProviderConfig) {
+        return null;
     }
 
 }
