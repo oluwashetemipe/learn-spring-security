@@ -23,22 +23,27 @@ public class LssSecurityConfig {
 
     //
 
+     // @formatter:on
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception { // @formatter:off 
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.
-            inMemoryAuthentication().passwordEncoder(passwordEncoder).
-            withUser("user").password(passwordEncoder.encode("pass")).
-            roles("USER");
-    } // @formatter:on
+                inMemoryAuthentication().
+                passwordEncoder(passwordEncoder).
+                withUser("admin").
+                password(passwordEncoder.encode("admin")).
+                roles("USER");
+    }
 
+
+    //Configuring custom login page using Lambdas
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {// @formatter:off
         http
         .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/delete/**").hasRole("ADMIN")
                 .anyRequest().authenticated())
-        .formLogin(Customizer.withDefaults());
-        return http.build();
+                .formLogin((formLogin) -> formLogin.loginPage("/login").permitAll().loginProcessingUrl("/doLogin"));
+    return http.build();
     } // @formatter:on
 
 }
