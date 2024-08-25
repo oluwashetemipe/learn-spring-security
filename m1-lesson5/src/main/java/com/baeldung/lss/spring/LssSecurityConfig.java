@@ -40,7 +40,7 @@ public class LssSecurityConfig {
         .formLogin((form) -> form
                 .loginPage("/login").permitAll()
                 .loginProcessingUrl("/doLogin"))
-        .logout((logout) -> logout.permitAll().logoutRequestMatcher(new AntPathRequestMatcher("/doLogout", "POST")).logoutSuccessUrl(""))
+        .logout((logout) -> logout.permitAll().logoutRequestMatcher(new AntPathRequestMatcher("/doLogout", "POST")).logoutSuccessHandler(logout.getLogoutSuccessHandler()))
         .csrf((csrf) -> csrf.disable());
         return http.build();
     } // @formatter:on
