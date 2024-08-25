@@ -39,7 +39,7 @@ public class LssSecurityConfig {
         .formLogin((form) -> form
                 .loginPage("/login").permitAll()
                 .loginProcessingUrl("/doLogin"))
-
+                .logout((logout) -> logout.permitAll().logoutUrl("/doLogout"))
         .csrf((csrf) -> csrf.disable());
         return http.build();
     } // @formatter:on
